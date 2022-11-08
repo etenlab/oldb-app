@@ -1,0 +1,7 @@
+{
+  "name": "oldb-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
