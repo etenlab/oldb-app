@@ -34,6 +34,10 @@ const App: React.FC = () => (
         <Route exact path="/">
           <Redirect to="/home" />
         </Route>
+        <Route path='/SLI' component={() => {
+          window.location.href = 'https://cartographa.netlify.app/#close';
+          return null;
+        }} />
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
