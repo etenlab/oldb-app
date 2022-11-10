@@ -1,4 +1,4 @@
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route, useHistory } from "react-router-dom";
 import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import Home from "./pages/Home";
@@ -25,6 +25,7 @@ import "./theme/variables.css";
 import "ag-grid-community/styles/ag-grid.css"; // Core grid CSS, always needed
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import Diff from "./pages/Diff";
 
 const client = new ApolloClient({
   uri: "https://fast-heron-34.hasura.app/v1/graphql",
@@ -32,28 +33,34 @@ const client = new ApolloClient({
 });
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <ApolloProvider client={client}>
-      <IonReactRouter>
-        <IonRouterOutlet>
-          <Route exact path="/home">
-            <Home />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/home" />
-          </Route>
-          <Route
-            path="/SLI"
-            component={() => {
-              window.location.href = "https://cartographa.netlify.app/#close";
-              return null;
-            }}
-          />
-        </IonRouterOutlet>
-      </IonReactRouter>
-    </ApolloProvider>
-  </IonApp>
-);
+const App: React.FC = () => {
+  
+  return (
+    <IonApp>
+      <ApolloProvider client={client}>
+        <IonReactRouter>
+          <IonRouterOutlet>
+            <Route exact path="/home">
+              <Home />
+            </Route>
+            <Route exact path="/diff">
+              <Diff />
+            </Route>
+            <Route exact path="/">
+              <Redirect to="/home" />
+            </Route>
+            <Route
+              path="/SLI"
+              component={() => {
+                window.location.href = "https://cartographa.netlify.app/#close";
+                return null;
+              }}
+            />
+          </IonRouterOutlet>
+        </IonReactRouter>
+      </ApolloProvider>
+    </IonApp>
+  );
+};
 
 export default App;

@@ -10,12 +10,13 @@ import ExploreContainer from "../components/ExploreContainer";
 import "./Home.css";
 import { AgGridReact } from "ag-grid-react";
 import { gql, useQuery } from "@apollo/client";
+import { CircleSpinnerOverlay } from "react-spinner-overlay";
+import { useHistory, withRouter } from "react-router-dom";
 
 const Home: React.FC = () => {
-  const [rowData, setRowData] = useState([]);
   const GET_ROW_DATA = gql`
     query MyQuery {
-      progress_bible_language_details(limit: 10, offset: 0) {
+      progress_bible_language_details(order_by: { id: asc }, limit: 1000) {
         code_status
         ethnologue_name
         how_to_fix
@@ -76,6 +77,7 @@ const Home: React.FC = () => {
   // if (error) {
   //   return <div>Error! {error.message}</div>;
   // } else
+  const history = useHistory();
   console.log("graphqlData", data);
   return (
     <IonPage>
@@ -94,9 +96,18 @@ const Home: React.FC = () => {
           className="ag-theme-alpine"
           style={{ width: "auto", height: "90vh" }}
         >
+          <CircleSpinnerOverlay
+            loading={loading}
+            overlayColor="rgba(0,153,255,0.2)"
+          ></CircleSpinnerOverlay>
           <AgGridReact
             rowData={data ? data.progress_bible_language_details : []}
             columnDefs={columnDefs}
+            pagination={true}
+            onRowClicked={(event) => {
+              history.push(`/diff?rowId=${event.data.id}`);
+              document.location.reload();
+            }}
           ></AgGridReact>
         </div>
       </IonContent>
@@ -104,4 +115,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default withRouter(Home);
