@@ -6,7 +6,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { useEffect, useState } from "react";
-import ExploreContainer from "../components/ExploreContainer";
+
 import "./Home.css";
 import { AgGridReact } from "ag-grid-react";
 import { gql, useQuery } from "@apollo/client";
