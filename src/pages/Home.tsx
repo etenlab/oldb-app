@@ -5,7 +5,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import "./Home.css";
 import { AgGridReact } from "ag-grid-react";

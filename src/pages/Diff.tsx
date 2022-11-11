@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   IonButton,
   IonContent,
@@ -7,7 +7,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { useHistory, withRouter, useParams } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 import { CircleSpinnerOverlay } from "react-spinner-overlay";
 import { AgGridReact } from "ag-grid-react";
