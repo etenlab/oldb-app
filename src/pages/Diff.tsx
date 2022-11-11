@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  IonButton,
   IonContent,
   IonHeader,
   IonPage,
@@ -22,6 +23,15 @@ const transformObjectToArray = (object: any): any => {
     });
   }
   return newArray;
+};
+const appendDataToArray = (object: any, array: any): any => {
+  let index = 0;
+  for (const [key, value] of Object.entries(object)) {
+    array[index].column_name_2 = key;
+    array[index].sil_language_codes_data = value;
+    index++;
+  }
+  return array;
 };
 
 function Diff() {
@@ -60,19 +70,73 @@ function Diff() {
       }
     }
   `;
+
   const [columnDefs, setColumnDefs] = useState([
     { field: "column_name" },
     { field: "progress_bible_language_data" },
   ]);
-
-  const { loading, error, data } = useQuery(GET_ROW_DATA_FOR_ID, {
+  const [rowData, setRowData] = useState([]);
+  const [isoCode, setIsoCode] = useState("");
+  const {
+    loading,
+    error,
+    data: data1,
+  } = useQuery(GET_ROW_DATA_FOR_ID, {
     variables: { language: "english" },
+    onCompleted: (data) => {
+      setIsoCode(data.progress_bible_language_details[0].iso_639_3_code);
+      setRowData(
+        transformObjectToArray(data.progress_bible_language_details[0])
+      );
+    },
   });
+
+  const GET_DATA_FOR_SIL = gql`
+    query MyQuery {
+      sil_language_codes(where: { code: { _eq: "${isoCode}" }}) {
+        code
+        country_code
+        id
+        name
+        status
+      }
+    }
+`;
+  //   useEffect(() => {
+  //     setRowData(
+  //       data1
+  //         ? transformObjectToArray(data1.progress_bible_language_details[0])
+  //         : []
+  //     );
+  //   }, [Object.entries(data1).length]);
+  const {
+    loading: loading1,
+    error: error1,
+    data: data2,
+  } = useQuery(GET_DATA_FOR_SIL, {
+    variables: { language: "english" },
+    onCompleted: (data) => {},
+  });
+  const handleComparision = async () => {
+    setColumnDefs((prevColumnDefs) => [
+      ...prevColumnDefs,
+      {
+        field: "column_name_2",
+      },
+      { field: "sil_language_codes_data" },
+    ]);
+    setRowData((prevRowData) =>
+      appendDataToArray(data2.sil_language_codes[0], prevRowData)
+    );
+  };
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonTitle>openlanguages.io</IonTitle>
+          <IonButton onClick={handleComparision}>
+            Compare with Ethnologue
+          </IonButton>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -81,6 +145,7 @@ function Diff() {
             <IonTitle size="large"></IonTitle>
           </IonToolbar>
         </IonHeader>
+
         <div
           className="ag-theme-alpine"
           style={{ width: "auto", height: "90vh" }}
@@ -91,11 +156,11 @@ function Diff() {
           ></CircleSpinnerOverlay>
           <AgGridReact
             rowData={
-              data
-                ? transformObjectToArray(
-                    data.progress_bible_language_details[0]
-                  )
-                : []
+              rowData
+              // ? transformObjectToArray(
+              //     data.progress_bible_language_details[0]
+              //   )
+              // : []
             }
             columnDefs={columnDefs}
           ></AgGridReact>
