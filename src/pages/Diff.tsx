@@ -134,7 +134,10 @@ function Diff() {
       <IonHeader>
         <IonToolbar>
           <IonTitle>openlanguages.io</IonTitle>
-          <IonButton onClick={handleComparision}>
+          <IonButton
+            onClick={handleComparision}
+            disabled={columnDefs.length > 2}
+          >
             Compare with Ethnologue
           </IonButton>
         </IonToolbar>
