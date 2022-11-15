@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   IonButton,
   IonContent,
@@ -109,6 +109,7 @@ function Diff() {
   //         : []
   //     );
   //   }, [Object.entries(data1).length]);
+
   const {
     loading: loading1,
     error: error1,
@@ -129,17 +130,26 @@ function Diff() {
       appendDataToArray(data2.sil_language_codes[0], prevRowData)
     );
   };
+  useEffect(() => {
+    const getComparisionData = async () => {
+      if (data1 && data2) {
+        await handleComparision();
+      }
+    };
+    getComparisionData();
+  }, [data1, data2]);
+
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonTitle>openlanguages.io</IonTitle>
-          <IonButton
+          {/* <IonButton
             onClick={handleComparision}
             disabled={columnDefs.length > 2}
           >
             Compare with Ethnologue
-          </IonButton>
+          </IonButton> */}
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
