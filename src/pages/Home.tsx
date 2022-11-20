@@ -44,28 +44,28 @@ const Home: React.FC = () => {
   `;
 
   const columnDefs = [
-    { field: "id" },
-    { field: "unit_code" },
-    { field: "unit_type" },
-    { field: "unit_name" },
-    { field: "unit_full_name" },
-    { field: "ethnologue_name" },
-    { field: "iso_639_3_code" },
-    { field: "is_sign_language" },
-    { field: "code_status" },
-    { field: "language_status" },
-    { field: "language_scope" },
-    { field: "primary_continent" },
-    { field: "primary_country_name" },
-    { field: "primary_country_code" },
-    { field: "retirement_explanation" },
-    { field: "how_to_fix" },
-    { field: "retired_date" },
-    { field: "show_active_language" },
-    { field: "show_retired_language" },
-    { field: "show_active_dialect" },
-    { field: "show_retired_dialect" },
-    { field: "show_sign_language" },
+    { field: "id", editable: true },
+    { field: "unit_code", editable: true },
+    { field: "unit_type", editable: true },
+    { field: "unit_name", editable: true },
+    { field: "unit_full_name", editable: true },
+    { field: "ethnologue_name", editable: true },
+    { field: "iso_639_3_code", editable: true },
+    { field: "is_sign_language", editable: true },
+    { field: "code_status", editable: true },
+    { field: "language_status", editable: true },
+    { field: "language_scope", editable: true },
+    { field: "primary_continent", editable: true },
+    { field: "primary_country_name", editable: true },
+    { field: "primary_country_code", editable: true },
+    { field: "retirement_explanation", editable: true },
+    { field: "how_to_fix", editable: true },
+    { field: "retired_date", editable: true },
+    { field: "show_active_language", editable: true },
+    { field: "show_retired_language", editable: true },
+    { field: "show_active_dialect", editable: true },
+    { field: "show_retired_dialect", editable: true },
+    { field: "show_sign_language", editable: true },
   ];
   const { loading, error, data } = useQuery(GET_ROW_DATA, {
     variables: { language: "english" },
@@ -104,10 +104,11 @@ const Home: React.FC = () => {
             rowData={data ? data.progress_bible_language_details : []}
             columnDefs={columnDefs}
             pagination={true}
-            onRowClicked={(event) => {
-              history.push(`/diff?rowId=${event.data.id}`);
-              document.location.reload();
-            }}
+            editType="fullRow"
+            // onRowClicked={(event) => {
+            //   history.push(`/diff?rowId=${event.data.id}`);
+            //   document.location.reload();
+            // }}
           ></AgGridReact>
         </div>
       </IonContent>
