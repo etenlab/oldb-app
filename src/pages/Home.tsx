@@ -1,4 +1,5 @@
 import {
+  IonButton,
   IonContent,
   IonHeader,
   IonPage,
@@ -12,6 +13,14 @@ import { AgGridReact } from "ag-grid-react";
 import { gql, useQuery } from "@apollo/client";
 import { CircleSpinnerOverlay } from "react-spinner-overlay";
 import { useHistory, withRouter } from "react-router-dom";
+
+const BtnCellRenderer: React.FC = (props: any) => {
+  const btnClickedHandler = () => {
+    props.clicked(props.value);
+  };
+
+  return <button onClick={btnClickedHandler}>{props.value} diff view</button>;
+};
 
 const Home: React.FC = () => {
   const GET_ROW_DATA = gql`
@@ -44,7 +53,16 @@ const Home: React.FC = () => {
   `;
 
   const columnDefs = [
-    { field: "id", editable: true },
+    {
+      field: "id",
+      cellRenderer: BtnCellRenderer,
+      cellRendererParams: {
+        clicked: function (field: any) {
+          history.push(`/diff?rowId=${field}`);
+          document.location.reload();
+        },
+      },
+    },
     { field: "unit_code", editable: true },
     { field: "unit_type", editable: true },
     { field: "unit_name", editable: true },
