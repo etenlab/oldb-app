@@ -22,6 +22,18 @@ const BtnCellRenderer: React.FC = (props: any) => {
   return <button onClick={btnClickedHandler}>{props.value} diff view</button>;
 };
 
+const EditBtnCellRenderer: React.FC = (props: any) => {
+  const btnClickedHandler = () => {
+    props.clicked(props.value);
+  };
+
+  return (
+    <button onClick={btnClickedHandler}>
+      {props.value} {props.buttonText}
+    </button>
+  );
+};
+
 const Home: React.FC = () => {
   const GET_ROW_DATA = gql`
     query MyQuery {
@@ -61,6 +73,17 @@ const Home: React.FC = () => {
           history.push(`/diff?rowId=${field}`);
           document.location.reload();
         },
+        buttonText: "diff view",
+      },
+    },
+    {
+      field: "edit_submit",
+      cellRenderer: EditBtnCellRenderer,
+      cellRendererParams: {
+        clicked: function (field: any) {
+          
+        },
+        buttonText: "Edit Button",
       },
     },
     { field: "unit_code", editable: true },
