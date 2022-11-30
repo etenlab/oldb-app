@@ -14,6 +14,7 @@ import { gql, useQuery } from "@apollo/client";
 import { CircleSpinnerOverlay } from "react-spinner-overlay";
 import { useHistory, withRouter } from "react-router-dom";
 
+// This button will redirect you to the diff view of that row
 const BtnCellRenderer: React.FC = (props: any) => {
   const btnClickedHandler = () => {
     props.clicked(props.value);
@@ -22,6 +23,7 @@ const BtnCellRenderer: React.FC = (props: any) => {
   return <button onClick={btnClickedHandler}>{props.value} diff view</button>;
 };
 
+// This button will render the edit button
 const EditBtnCellRenderer: React.FC = (props: any) => {
   const btnClickedHandler = () => {
     props.clicked(props.value);
@@ -80,9 +82,7 @@ const Home: React.FC = () => {
       field: "edit_submit",
       cellRenderer: EditBtnCellRenderer,
       cellRendererParams: {
-        clicked: function (field: any) {
-          
-        },
+        clicked: function (field: any) {},
         buttonText: "Edit Button",
       },
     },
@@ -111,13 +111,7 @@ const Home: React.FC = () => {
   const { loading, error, data } = useQuery(GET_ROW_DATA, {
     variables: { language: "english" },
   });
-  useEffect(() => {}, []);
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
-  // if (error) {
-  //   return <div>Error! {error.message}</div>;
-  // } else
+
   const history = useHistory();
   console.log("graphqlData", data);
   return (
@@ -146,10 +140,6 @@ const Home: React.FC = () => {
             columnDefs={columnDefs}
             pagination={true}
             editType="fullRow"
-            // onRowClicked={(event) => {
-            //   history.push(`/diff?rowId=${event.data.id}`);
-            //   document.location.reload();
-            // }}
           ></AgGridReact>
         </div>
       </IonContent>

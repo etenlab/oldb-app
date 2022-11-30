@@ -102,13 +102,7 @@ function Diff() {
       }
     }
 `;
-  //   useEffect(() => {
-  //     setRowData(
-  //       data1
-  //         ? transformObjectToArray(data1.progress_bible_language_details[0])
-  //         : []
-  //     );
-  //   }, [Object.entries(data1).length]);
+
 
   const {
     loading: loading1,
@@ -144,12 +138,7 @@ function Diff() {
       <IonHeader>
         <IonToolbar>
           <IonTitle>openlanguages.io</IonTitle>
-          {/* <IonButton
-            onClick={handleComparision}
-            disabled={columnDefs.length > 2}
-          >
-            Compare with Ethnologue
-          </IonButton> */}
+          
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -170,10 +159,7 @@ function Diff() {
           <AgGridReact
             rowData={
               rowData
-              // ? transformObjectToArray(
-              //     data.progress_bible_language_details[0]
-              //   )
-              // : []
+            
             }
             columnDefs={columnDefs}
           ></AgGridReact>
