@@ -1,42 +1,40 @@
 import {
-  IonButton,
   IonContent,
+  IonGrid,
   IonHeader,
+  IonItem,
   IonPage,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { useEffect } from "react";
-
 import "./Home.css";
-import { AgGridReact } from "ag-grid-react";
-import { gql, useQuery } from "@apollo/client";
-import { CircleSpinnerOverlay } from "react-spinner-overlay";
-import { useHistory, withRouter } from "react-router-dom";
+// import { gql, useQuery } from "@apollo/client";
+import { withRouter } from "react-router-dom";
 
 // This button will redirect you to the diff view of that row
-const BtnCellRenderer: React.FC = (props: any) => {
-  const btnClickedHandler = () => {
-    props.clicked(props.value);
-  };
+// const BtnCellRenderer: React.FC = (props: any) => {
+//   const btnClickedHandler = () => {
+//     props.clicked(props.value);
+//   };
 
-  return <button onClick={btnClickedHandler}>{props.value} diff view</button>;
-};
+//   return <button onClick={btnClickedHandler}>{props.value} diff view</button>;
+// };
 
 // This button will render the edit button
-const EditBtnCellRenderer: React.FC = (props: any) => {
-  const btnClickedHandler = () => {
-    props.clicked(props.value);
-  };
+// const EditBtnCellRenderer: React.FC = (props: any) => {
+//   const btnClickedHandler = () => {
+//     props.clicked(props.value);
+//   };
 
-  return (
-    <button onClick={btnClickedHandler}>
-      {props.value} {props.buttonText}
-    </button>
-  );
-};
+//   return (
+//     <button onClick={btnClickedHandler}>
+//       {props.value} {props.buttonText}
+//     </button>
+//   );
+// };
 
 const Home: React.FC = () => {
+  /*
   const GET_ROW_DATA = gql`
     query MyQuery {
       progress_bible_language_details(order_by: { id: asc }, limit: 1000) {
@@ -65,7 +63,6 @@ const Home: React.FC = () => {
       }
     }
   `;
-
   const columnDefs = [
     {
       field: "id",
@@ -111,9 +108,9 @@ const Home: React.FC = () => {
   const { loading, error, data } = useQuery(GET_ROW_DATA, {
     variables: { language: "english" },
   });
+  */
 
-  const history = useHistory();
-  console.log("graphqlData", data);
+  // const history = useHistory();
   return (
     <IonPage>
       <IonHeader>
@@ -127,7 +124,14 @@ const Home: React.FC = () => {
             <IonTitle size="large"></IonTitle>
           </IonToolbar>
         </IonHeader>
-        <div
+        <IonContent>
+          <IonGrid>
+            <IonItem href="/table/iso-639-2">ISO 639 2</IonItem>
+            <IonItem href="/table/glottolog-language">Glottolog Language</IonItem>
+            <IonItem href="/table/sil-language-index">Sil Language Index</IonItem>
+          </IonGrid>
+        </IonContent>
+        {/* <div
           className="ag-theme-alpine"
           style={{ width: "auto", height: "90vh" }}
         >
@@ -141,7 +145,7 @@ const Home: React.FC = () => {
             pagination={true}
             editType="fullRow"
           ></AgGridReact>
-        </div>
+        </div> */}
       </IonContent>
     </IonPage>
   );

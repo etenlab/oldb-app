@@ -2,7 +2,8 @@ import { Redirect, Route, useHistory } from "react-router-dom";
 import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import Home from "./pages/Home";
-
+import DataTable from "./pages/DataTable";
+import Discussion from './components/Discussion';
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
 
@@ -26,9 +27,18 @@ import "ag-grid-community/styles/ag-grid.css"; // Core grid CSS, always needed
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import Diff from "./pages/Diff";
+import { PrivateRoute } from "./common/PrivateRoute";
+
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+
+// const client = new ApolloClient({
+//   uri: "https://fast-heron-34.hasura.app/v1/graphql",
+//   cache: new InMemoryCache(),
+// });
 
 const client = new ApolloClient({
-  uri: "https://fast-heron-34.hasura.app/v1/graphql",
+  uri: "http://localhost:8012/graphql",
   cache: new InMemoryCache(),
 });
 setupIonicReact();
@@ -40,15 +50,26 @@ const App: React.FC = () => {
       <ApolloProvider client={client}>
         <IonReactRouter>
           <IonRouterOutlet>
-            <Route exact path="/home">
-              <Home />
-            </Route>
+            <PrivateRoute exact path="/home" roles={['admin']} component={Home}>
+          </PrivateRoute>
+          <Route exact path="/">
+            <Redirect to="/home" />
+          </Route>
+          <Route exact path="/login">
+            <Login />
+          </Route>
+          <Route exact path="/register">
+            <Register />
+          </Route>
+
+
             <Route exact path="/diff">
               <Diff />
             </Route>
-            <Route exact path="/">
-              <Redirect to="/home" />
-            </Route>
+            <PrivateRoute path='/table/:table' roles={['admin']} component={DataTable}></PrivateRoute>
+            <PrivateRoute
+              path="/discussion/:table_name/:row"
+              component={Discussion} roles={['admin']}            />
             <Route
               path="/SLI"
               component={() => {
