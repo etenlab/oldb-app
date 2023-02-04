@@ -18,7 +18,10 @@ export function decodeToken(str: string) {
             str += '=';
             break;
         default:
-            throw 'Invalid token';
+            throw Object.assign(
+                new Error('Invalid token'),
+                { code: 402 }
+            );
     }
 
     str = decodeURIComponent(escape(atob(str)));

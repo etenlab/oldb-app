@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  IonButton,
   IonContent,
   IonHeader,
   IonPage,
@@ -110,7 +109,7 @@ function Diff() {
     data: data2,
   } = useQuery(GET_DATA_FOR_SIL, {
     variables: { language: "english" },
-    onCompleted: (data) => {},
+    onCompleted: () => {},
   });
   const handleComparision = async () => {
     setColumnDefs((prevColumnDefs) => [
@@ -131,7 +130,12 @@ function Diff() {
       }
     };
     getComparisionData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data1, data2]);
+
+    if (error) return null;
+    if (loading1) return null;
+    if (error1) return null;
 
   return (
     <IonPage>
