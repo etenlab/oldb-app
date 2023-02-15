@@ -16,12 +16,6 @@ jobs:
         with:
           node-version: 16
 
-      - name: npm ci --force
-        run: npm ci --force
-
-      - name: npm run build
-        run: npm run build
-
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -31,29 +25,25 @@ jobs:
 
       - uses: dkershner6/aws-ssm-getparameters-action@v1
         with:
-          parameterPairs: '
-            /dev/deploy/oldb-app/access-key = AWS_ACCESS_KEY_ID,
-            /dev/deploy/oldb-app/secret-access-key = AWS_SECRET_ACCESS_KEY,
-            /dev/deploy/oldb-app/s3-bucket-name = AWS_S3_BUCKET,
-            /dev/deploy/oldb-app/cloudfront-distribution-id = DISTRIBUTION_ID,
-            /dev/deploy/oldb-app/react-app-server-url = REACT_APP_SERVER_URL,
-            /dev/deploy/oldb-app/react-app-keycloak-url = REACT_APP_KEYCLOAK_URL,
-            /dev/deploy/oldb-app/react-app-keycloak-realm = REACT_APP_KEYCLOAK_REALM,
-            /dev/deploy/oldb-app/react-app-keycloak-client-id = REACT_APP_KEYCLOAK_CLIENT_ID,
-            /dev/deploy/oldb-app/react-app-discussion-subscription-ws-api = REACT_APP_DISCUSSION_SUBSCRIPTION_WS_API,
-            /dev/deploy/oldb-app/react-app-discussion-subscription-api = REACT_APP_DISCUSSION_SUBSCRIPTION_API,
-            /dev/deploy/oldb-app/react-app-discussion-api = REACT_APP_DISCUSSION_API,
-            /dev/deploy/oldb-app/react-app-file-api = REACT_APP_FILE_API,
-            /dev/deploy/oldb-app/react-app-aggregation-api = REACT_APP_AGGREGATION_API,
-            /dev/deploy/oldb-app/react-app-graphql-mode = REACT_APP_GRAPHQL_MODE,
-            /dev/deploy/oldb-app/react-app-notification-api = REACT_APP_NOTIFICATION_API,
-            /dev/deploy/oldb-app/react-app-notification-subscription-ws-api = REACT_APP_NOTIFICATION_SUBSCRIPTION_WS_API,
-            /dev/deploy/oldb-app/react-app-notification-subscription-api = REACT_APP_NOTIFICATION_SUBSCRIPTION_API'
-          withDecryption: 'true' # defaults to true
+          parameterPairs: '/dev/deploy/oldb-app/env = ENV'
+
+      - name: save env to .env
+        run: |
+          cat << EOF > .env
+          ${{ env.ENV }}
+          EOF
+
+      - name: npm ci --force
+        run: npm ci --force
+
+      - name: npm run build
+        run: npm run build
+
+      - name: Load .env file
+        uses: xom9ikk/dotenv@v2
 
       - uses: TimekillerTK/s3-sync-action@master
         with:
           args: --follow-symlinks --delete
         env:
-          AWS_REGION: us-east-2
           SOURCE_DIR: 'build'
