@@ -3,7 +3,7 @@
 import { jsx } from '@emotion/react';
 import { useState, useCallback, memo } from 'react';
 import { useParams, useHistory } from 'react-router';
-import { TableLoader } from '@eten-lab/data-table';
+// import { TableLoader } from '@eten-lab/data-table';
 
 import { TablesMeta } from '../common/DataTableObjects';
 
@@ -77,13 +77,13 @@ const DataTable: React.FC = () => {
         <IonContent>
           <StyledWrapFullHeight>
             <StyledH3>{TablesMeta[tName].title}</StyledH3>
-            <TableLoader
+            {/* <TableLoader
               columns={TablesMeta[tName].fields}
               doQuery={doQuery}
               eager
               loadPageSize={25}
               onRowClicked={handleRowClick}
-            ></TableLoader>
+            ></TableLoader> */}
           </StyledWrapFullHeight>
         </IonContent>
       );
