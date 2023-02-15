@@ -83,5 +83,5 @@
     "devDependencies": {
         "@capacitor/cli": "4.4.0"
     },
-    "description": "An Ionic project"
+    "description": "Open Languages"
 }

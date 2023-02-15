@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonItem, IonList, IonPage, IonText, IonTitle, IonToolbar, useIonRouter } from "@ionic/react";
+import { IonContent, IonHeader, IonPage, IonText, IonTitle, IonToolbar, useIonRouter } from "@ionic/react";
 import React from "react";
 
 
