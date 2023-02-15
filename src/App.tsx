@@ -31,6 +31,8 @@ import { PrivateRoute } from "./common/PrivateRoute";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import SliPage from "./pages/SliPage";
+import SliDataPage from "./pages/SliDataPage";
 
 // const client = new ApolloClient({
 //   uri: "https://fast-heron-34.hasura.app/v1/graphql",
@@ -44,23 +46,26 @@ const client = new ApolloClient({
 setupIonicReact();
 
 const App: React.FC = () => {
-  
+
   return (
     <IonApp>
       <ApolloProvider client={client}>
         <IonReactRouter>
           <IonRouterOutlet>
-            <PrivateRoute exact path="/home" roles={['admin']} component={Home}>
-          </PrivateRoute>
-          <Route exact path="/">
-            <Redirect to="/home" />
-          </Route>
-          <Route exact path="/login">
-            <Login />
-          </Route>
-          <Route exact path="/register">
-            <Register />
-          </Route>
+            {/* <PrivateRoute exact path="/home" roles={['admin']} component={Home}>
+            </PrivateRoute> */}
+            <Route exact path="/">
+              <Redirect to="/home" />
+            </Route>
+            <Route exact path="/home">
+              <Home />
+            </Route>
+            <Route exact path="/login">
+              <Login />
+            </Route>
+            <Route exact path="/register">
+              <Register />
+            </Route>
 
 
             <Route exact path="/diff">
@@ -69,14 +74,22 @@ const App: React.FC = () => {
             <PrivateRoute path='/table/:table' roles={['admin']} component={DataTable}></PrivateRoute>
             <PrivateRoute
               path="/discussion/:table_name/:row"
-              component={Discussion} roles={['admin']}            />
+              component={Discussion} roles={['admin']} />
+
+            <Route exact path="/sli">
+              <SliPage />
+            </Route>
+            <Route exact path="/sli/data">
+              <SliDataPage />
+            </Route>
             <Route
-              path="/SLI"
+              path="/sli/map"
               component={() => {
                 window.location.href = "https://cartographa.netlify.app/#close";
                 return null;
               }}
             />
+
           </IonRouterOutlet>
         </IonReactRouter>
       </ApolloProvider>

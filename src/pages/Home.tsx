@@ -3,6 +3,7 @@ import {
   IonGrid,
   IonHeader,
   IonItem,
+  IonList,
   IonPage,
   IonTitle,
   IonToolbar,
@@ -125,11 +126,17 @@ const Home: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent>
-          <IonGrid>
+
+          <IonList>
+            <IonItem>
+              <a href="/sli">SLI</a>
+            </IonItem>
+          </IonList>
+          {/* <IonGrid>
             <IonItem href="/table/iso-639-2">ISO 639 2</IonItem>
             <IonItem href="/table/glottolog-language">Glottolog Language</IonItem>
             <IonItem href="/table/sil-language-index">Sil Language Index</IonItem>
-          </IonGrid>
+          </IonGrid> */}
         </IonContent>
         {/* <div
           className="ag-theme-alpine"
