@@ -1,23 +1,25 @@
-interface Field{
+import {GridColDef} from "@mui/x-data-grid";
+
+interface Field {
     title: string,
     field: string
 }
 
-interface DetailsPanel{
+interface DetailsPanel {
     tableNames?: string[],
     getRow?: boolean,
     getRowField?: any
 }
 
-interface TablesMetaType{
+interface TablesMetaType {
     [key: string]: {
         title: string,
-        fields: Field[],
+        fields: (Field & GridColDef)[],
         searchFields: string[],
         listing?: string,
         detailsPanel?: DetailsPanel
     }
-    
+
 }
 
 
@@ -29,6 +31,7 @@ export const TablesMeta: TablesMetaType = {
             {
                 title: 'ID',
                 field: 'id',
+                align: 'right',
             },
             {
                 title: 'Glotto Code',
