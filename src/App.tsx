@@ -40,7 +40,8 @@ import SliDataPage from "./pages/SliDataPage";
 // });
 
 const client = new ApolloClient({
-  uri: "http://localhost:8012/graphql",
+  uri: process.env.REACT_APP_NOTIFICATION_API_SUBSCRIPTION_SERVER_URL
+      || "http://localhost:8012/graphql",
   cache: new InMemoryCache(),
 });
 setupIonicReact();
@@ -79,7 +80,7 @@ const App: React.FC = () => {
             <Route exact path="/sli">
               <SliPage />
             </Route>
-            <Route exact path="/sli/data">
+            <Route exact path="/sli/data/:table">
               <SliDataPage />
             </Route>
             <Route

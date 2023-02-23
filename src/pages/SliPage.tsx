@@ -28,7 +28,7 @@ const SliPage: React.FC = () => {
         <IonContent>
           <IonList>
             <IonItem>
-              <a href="/sli/data">data</a>
+              <a href="/sli/data/glottolog-language">data</a>
             </IonItem>
             <IonItem>
               <a href="/sli/map">map</a>
