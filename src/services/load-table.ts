@@ -42,5 +42,5 @@ export const useLoad = (pageParams: PageParamType, tableName: string) => {
         let totalCount = response.data[tableName].aggregate.count;
         let rows = response.data[tableName].nodes;
         return {totalCount, rows};
-    }, [pageParams, tableName, client])
+    }, [tableName, client])
 }

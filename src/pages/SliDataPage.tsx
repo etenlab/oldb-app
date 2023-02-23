@@ -1,6 +1,5 @@
 import {IonContent, IonHeader, IonPage, IonText, IonTitle, IonToolbar, useIonRouter} from "@ionic/react";
 import React from "react";
-import {GridColDef, GridValueGetterParams} from "@mui/x-data-grid";
 import {GridTable} from "../components/table/GridTable";
 
 const SliDataPage: React.FC = () => {

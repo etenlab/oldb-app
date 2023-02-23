@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useEffect, useState} from 'react';
+import React, {memo, useCallback, useState} from 'react';
 import {useHistory} from 'react-router';
 import {TableLoader} from '@eten-lab/data-table';
 
@@ -29,7 +29,6 @@ const DataTable: React.FC = () => {
     const tableName = 'glottolog_language_aggregate'
     const tName: ObjectKey = table;
     let listingName = TablesMeta[tName].listing ? TablesMeta[tName].listing : toCamelCase(table);
-    let tableFields = TablesMeta[tName].fields.map((value) => value.field);
 
     // const buildQueryFromParams = (query: PageParamType) => {
     //     console.log(query)
