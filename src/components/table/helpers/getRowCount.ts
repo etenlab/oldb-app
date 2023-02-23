@@ -1,5 +1,5 @@
 import {gql, useApolloClient} from "@apollo/client";
-import {useCallback, useMemo} from "react";
+import {useCallback} from "react";
 
 const localQueryBuilder = (tableName: string) => {
     return gql` {
@@ -18,5 +18,5 @@ export const useGetRowCount = (tableName: string) => {
     return useCallback(async () => {
         const response = await client.query({query});
         return response.data[tableName].aggregate.count
-    }, [tableName])
+    }, [tableName, client, query])
 }

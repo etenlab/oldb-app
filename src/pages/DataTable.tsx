@@ -5,12 +5,10 @@ import {TableLoader} from '@eten-lab/data-table';
 import {TablesMeta} from '../common/DataTableObjects';
 
 import {StyledH3, StyledWrapFullHeight} from '../common/styles';
-import {buildQuery} from '../common/query';
 import {gql, useApolloClient} from '@apollo/client';
 import {IonContent} from '@ionic/react';
 
 import {toCamelCase} from '../common/utils';
-import {DataLoaderProps} from "@eten-lab/data-table/src";
 
 interface PageParamType {
     pageSize?: number;
@@ -33,27 +31,27 @@ const DataTable: React.FC = () => {
     let listingName = TablesMeta[tName].listing ? TablesMeta[tName].listing : toCamelCase(table);
     let tableFields = TablesMeta[tName].fields.map((value) => value.field);
 
-    const buildQueryFromParams = (query: PageParamType) => {
-        console.log(query)
-        console.log(tableName)
-        var gqlQuery = buildQuery({
-            tableName: tableName,
-            listingName: listingName,
-            aggregateTable: tableName,
-            fields: {[tableName]: tableFields},
-            filterColumns: TablesMeta[tName].searchFields,
-            filterValue: (query ? query.search : "") + '%',
-            getRow: false,
-            // limit: 25,
-            // offset: 0,
-            limit: (query ? query.pageSize : 25),
-            offset: query ? (query.pageNumber! * query.pageSize!) : 0,
-            //  offset: query.pageNumber! * query.pageSize!,
+    // const buildQueryFromParams = (query: PageParamType) => {
+    //     console.log(query)
+    //     console.log(tableName)
+    //     var gqlQuery = buildQuery({
+    //         tableName: tableName,
+    //         listingName: listingName,
+    //         aggregateTable: tableName,
+    //         fields: {[tableName]: tableFields},
+    //         filterColumns: TablesMeta[tName].searchFields,
+    //         filterValue: (query ? query.search : "") + '%',
+    //         getRow: false,
+    //         // limit: 25,
+    //         // offset: 0,
+    //         limit: (query ? query.pageSize : 25),
+    //         offset: query ? (query.pageNumber! * query.pageSize!) : 0,
+    //         //  offset: query.pageNumber! * query.pageSize!,
 
-        });
-        console.log(gqlQuery)
-        return gqlQuery;
-    };
+    //     });
+    //     console.log(gqlQuery)
+    //     return gqlQuery;
+    // };
 
     const doQuery = async (params: PageParamType): Promise<{
         totalCount: number | null;

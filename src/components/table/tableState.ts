@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {ILoadData, PageParamType, useLoad} from "../../services/load-table";
 import {GridColDef, GridValidRowModel} from "@mui/x-data-grid";
 import {TablesMeta} from "../../common/DataTableObjects";
@@ -32,7 +32,7 @@ const useOnPageChange = (getData: ILoadData, setRows: React.Dispatch<React.SetSt
     }
 }
 export const useTable = (options: { tableName: string }) => {
-    const [pageParams, setPageParams] = useState<PageParamType>({pageSize: 15, pageNumber: 0});
+    const [pageParams] = useState<PageParamType>({pageSize: 15, pageNumber: 0});
     const [rowCount, setRowCount] = useState(0)
     const [rows, setRows] = useState<GridRowsProp>()
     const getData = useLoad(pageParams, options.tableName)
@@ -47,7 +47,7 @@ export const useTable = (options: { tableName: string }) => {
         getData(pageParams).then(data => {
             setRows(data.rows)
         })
-    }, [])
+    }, [getData, getRowCount, pageParams])
 
     return {rows, rowCount, columns, onPageChange}
 }
