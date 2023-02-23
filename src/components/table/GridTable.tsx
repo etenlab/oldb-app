@@ -31,6 +31,7 @@ export const GridTable = () => {
                 columns={columns}
                 rowCount={rowCount}
                 pageSize={15}
+                paginationMode={"server"}
                 onPageChange={onPageChange}
                 // rowsPerPageOptions={[15]}
                 checkboxSelection

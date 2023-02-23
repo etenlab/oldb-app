@@ -21,7 +21,7 @@ const useOnPageChange = (getData: ILoadData, setRows: React.Dispatch<React.SetSt
             .then(data => {
                 setRows(prevState => {
                     if (prevState) {
-                        const newState =  [...prevState, ...data.rows]
+                        const newState =  [...data.rows]
                         return newState
                     } else {
                         console.log('prev')
