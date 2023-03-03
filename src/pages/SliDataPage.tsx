@@ -37,7 +37,7 @@ const SliDataPage: React.FC = () => {
         return fetchDataCallback()
     };
 
-    const fetchDataCallback = useCallback(fetchData, [pageParams])
+    const fetchDataCallback = useCallback(fetchData, [dataTable.rows, dataTable.tableInfo.totalRows, pageParams?.pageNumber, pageParams?.pageSize])
 
     const handleRowClick = ({ rowData, rowIndex }: { rowData: unknown, rowIndex: number }) => {
         router.push('/')
