@@ -105,10 +105,8 @@ const DataTable: React.FC = () => {
     return (
         <IonContent>
             <StyledWrapFullHeight>
-
                 <StyledH3>{TablesMeta[tName].title}</StyledH3>
                 <TableLoader
-
                     columns={TablesMeta[tName].fields}
                     doQuery={doQuery}
                     // eager
