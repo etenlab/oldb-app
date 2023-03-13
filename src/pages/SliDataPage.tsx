@@ -11,12 +11,12 @@ const SliDataPage: React.FC = () => {
     const [pageParams, setPageParams] = useState<PageParamType>({pageNumber: 0, pageSize: 25});
     const [dataTable, setDataTable] = useState<DataTableDto>({ tableInfo: { title: 'Data Table', totalRows: 0 }, rows: [], headers: [] });
 
-    const fetchData = async () => {
+    const fetchData = async (params:PageParamType) => {
         let totalCount = dataTable.tableInfo.totalRows
         let rows = dataTable.rows
         try {
             const apiEndpoint = `${process.env.REACT_APP_OLDB_API}airtable/search`;
-            const query = {pageSize: pageParams?.pageSize, offset: ((pageParams?.pageNumber || 0) * (pageParams?.pageSize || 0))}
+            const query = {pageSize: params?.pageSize, offset: ((params?.pageNumber || 0) * (params?.pageSize || 0))}
             const apiRes = (await axios.post<DataTableDto>(apiEndpoint, query))
             if ([200, 201].includes(apiRes.status) && apiRes.data) {
                 setDataTable(apiRes.data)
@@ -34,10 +34,12 @@ const SliDataPage: React.FC = () => {
         rows: any[];
     }> => {
         setPageParams(params);
-        return fetchDataCallback()
+        const res = await fetchData(params);
+        return res
     };
 
-    const fetchDataCallback = useCallback(fetchData, [dataTable.rows, dataTable.tableInfo.totalRows, pageParams?.pageNumber, pageParams?.pageSize])
+    const fetchDataCallback = useCallback(doQuery, [dataTable.rows, dataTable.tableInfo.totalRows, pageParams?.pageNumber, pageParams?.pageSize])
+    
 
     const handleRowClick = ({ rowData, rowIndex }: { rowData: unknown, rowIndex: number }) => {
         router.push('/')
@@ -73,7 +75,7 @@ const SliDataPage: React.FC = () => {
                     <StyledH3>{dataTable.tableInfo.title}</StyledH3>
                     <TableLoader
                         columns={dataTable.headers}
-                        doQuery={doQuery}
+                        doQuery={fetchDataCallback}
                         loadPageSize={pageParams?.pageSize}
                         onRowClicked={handleRowClick}
                     ></TableLoader>
