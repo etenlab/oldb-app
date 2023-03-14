@@ -1,47 +1,42 @@
-import { TableLoader } from "@eten-lab/data-table";
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonRouter } from "@ionic/react";
-import axios from "axios";
-import React, { useCallback, useState } from "react";
-import { StyledWrapFullHeight, StyledH3 } from "../common/styles";
-import { DataTableDto } from "../dtos/airtable.dto";
-import { PageParamType } from "../services/load-table";
+import { TableLoader } from '@eten-lab/data-table'
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonRouter } from '@ionic/react'
+import axios from 'axios'
+import React, { useCallback, useState } from 'react'
+import { StyledWrapFullHeight, StyledH3 } from '../common/styles'
+import { DataTableDto } from '../dtos/airtable.dto'
+
+const API_REQ_PAGE_SIZE = 100
 
 const SliDataPage: React.FC = () => {
-    const router = useIonRouter();
-    const [pageParams, setPageParams] = useState<PageParamType>({pageNumber: 0, pageSize: 25});
-    const [dataTable, setDataTable] = useState<DataTableDto>({ tableInfo: { title: 'Data Table', totalRows: 0 }, rows: [], headers: [] });
+    const router = useIonRouter()
 
-    const fetchData = async (params:PageParamType) => {
-        let totalCount = dataTable.tableInfo.totalRows
-        let rows = dataTable.rows
-        try {
-            const apiEndpoint = `${process.env.REACT_APP_OLDB_API}airtable/search`;
-            const query = {pageSize: params?.pageSize, offset: ((params?.pageNumber || 0) * (params?.pageSize || 0))}
-            const apiRes = (await axios.post<DataTableDto>(apiEndpoint, query))
-            if ([200, 201].includes(apiRes.status) && apiRes.data) {
-                setDataTable(apiRes.data)
-                totalCount = apiRes.data.tableInfo?.totalRows || 0
-                rows = apiRes.data.rows
+    const [dataTable, setDataTable] = useState<DataTableDto>({
+        tableInfo: { title: 'Data Table', totalRows: 0 },
+        rows: [],
+        headers: [],
+    })
+
+    const doQuery = useCallback(
+        async (params: { pageSize: number; pageNumber: number; search: string }) => {
+            const query = {
+                pageSize: params.pageSize,
+                offset: params.pageNumber * params.pageSize,
             }
-        } catch (error) {
-            console.error('failed to fetch table data::', error)
-        }
-        return { totalCount, rows }
-    }
+            const apiRes = await axios.post<DataTableDto>(`${process.env.REACT_APP_OLDB_API}airtable/search`, query)
 
-    const doQuery = async (params: PageParamType): Promise<{
-        totalCount: number | null;
-        rows: any[];
-    }> => {
-        setPageParams(params);
-        const res = await fetchData(params);
-        return res
-    };
+            if ([200, 201].includes(apiRes.status) && apiRes.data && apiRes.data.rows?.length) {
+                const totalCount = apiRes.data.tableInfo?.totalRows || 0
+                const rows = apiRes.data.rows
+                setDataTable(apiRes.data)
+                return { totalCount, rows }
+            }
 
-    const fetchDataCallback = useCallback(doQuery, [dataTable.rows, dataTable.tableInfo.totalRows, pageParams?.pageNumber, pageParams?.pageSize])
-    
+            throw new Error(`No data returned from oldbApi / Airtable`)
+        },
+        [setDataTable],
+    )
 
-    const handleRowClick = ({ rowData, rowIndex }: { rowData: unknown, rowIndex: number }) => {
+    const handleRowClick = ({ rowData, rowIndex }: { rowData: unknown; rowIndex: number }) => {
         router.push('/')
     }
 
@@ -50,39 +45,29 @@ const SliDataPage: React.FC = () => {
             <IonHeader>
                 <IonToolbar>
                     <IonTitle
-                        style={{ cursor: "pointer" }}
+                        style={{ cursor: 'pointer' }}
                         onClick={() => {
-                            router.push("/home");
+                            router.push('/home')
                         }}
                     >
                         openlanguages.io
                     </IonTitle>
                 </IonToolbar>
             </IonHeader>
-            {/* <IonContent fullscreen>
-                <IonHeader collapse="condense">
-                    <IonToolbar>
-                        <IonTitle size="large"></IonTitle>
-                    </IonToolbar>
-                </IonHeader>
-                <IonText>SLI Data</IonText>
-                <IonContent style={{height: "88vh", width: "95vw", marginLeft: 40}}>
-                    <GridTable/>
-                </IonContent>
-            </IonContent> */}
+
             <IonContent>
                 <StyledWrapFullHeight>
                     <StyledH3>{dataTable.tableInfo.title}</StyledH3>
                     <TableLoader
                         columns={dataTable.headers}
-                        doQuery={fetchDataCallback}
-                        loadPageSize={pageParams?.pageSize}
+                        doQuery={doQuery}
+                        loadPageSize={API_REQ_PAGE_SIZE}
                         onRowClicked={handleRowClick}
                     ></TableLoader>
                 </StyledWrapFullHeight>
             </IonContent>
         </IonPage>
-    );
-};
+    )
+}
 
-export default SliDataPage;
+export default SliDataPage
