@@ -5,7 +5,7 @@ import React, { useCallback, useState } from 'react'
 import { StyledWrapFullHeight, StyledH3 } from '../common/styles'
 import { DataTableDto } from '../dtos/airtable.dto'
 
-const API_REQ_PAGE_SIZE = 100
+const API_REQ_PAGE_SIZE = 25
 
 const SliDataPage: React.FC = () => {
     const router = useIonRouter()
