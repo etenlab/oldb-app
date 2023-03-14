@@ -5,7 +5,7 @@ import React, { useCallback, useState } from 'react'
 import { StyledWrapFullHeight, StyledH3 } from '../common/styles'
 import { DataTableDto } from '../dtos/airtable.dto'
 
-const API_REQ_PAGE_SIZE = 25
+const API_REQ_PAGE_SIZE = 250
 
 const SliDataPage: React.FC = () => {
     const router = useIonRouter()
@@ -19,8 +19,13 @@ const SliDataPage: React.FC = () => {
     const doQuery = useCallback(
         async (params: { pageSize: number; pageNumber: number; search: string }) => {
             const query = {
-                pageSize: params.pageSize,
-                offset: params.pageNumber * params.pageSize,
+                /** No need to specify pagination params because api hardcoded to get all data from the 
+                    airtable due to impossibility of setting offset value in airtable.js 
+                    So if in future you'll need to get paginated data from the Airtable, use raw http requests
+                    https://airtable.com/developers/web/api/list-records
+                     */
+                // pageSize: params.pageSize,
+                // offset: params.pageNumber * params.pageSize,
             }
             const apiRes = await axios.post<DataTableDto>(`${process.env.REACT_APP_OLDB_API}airtable/search`, query)
 
